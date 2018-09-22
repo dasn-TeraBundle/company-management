@@ -1,0 +1,46 @@
+<nav class="navbar navbar-expand navbar-dark bmm-header">
+
+    <a class="navbar-brand" [routerLink]=homeUrl>
+        <img src="/assets/brand.png" width="30" height="30"
+             class="d-inline-block align-top">
+        <span class="d-none d-sm-inline">Company Management</span>
+    </a>
+
+    <!-- <div class="collapse navbar-collapse" id="navbarMenu"> -->
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item" *ngIf="user.role == 'SYS_ADMIN'">
+            <a class="nav-link" routerLink="/company" title="Summary">
+                <i class="fa fa-bar-chart-o"></i>
+                <span class="d-none d-md-inline"> Company</span>
+            </a>
+        </li>
+        <li class="nav-item" *ngIf="user.role == 'SYS_ADMIN' || user.role == 'ORG_ADMIN'">
+            <a class="nav-link" routerLink="/department" title="Halls">
+                <i class="fa fa-building-o"></i>
+                <span class="d-none d-md-inline"> Department</span>
+            </a>
+        </li>
+        <li class="nav-item" *ngIf="user.role == 'SYS_ADMIN' || user.role == 'ORG_ADMIN'">
+            <a class="nav-link" routerLink="/user" title="Movies">
+                <i class="fa fa-film"></i>
+                <span class="d-none d-md-inline"> User</span>
+            </a>
+        </li>
+    </ul>
+    <!-- </div> -->
+
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarAccountDropdown" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-user-circle-o"> <span class="d-none d-sm-inline">{{user?.firstname}}</span></i>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarAccountDropdown">
+                <button class="dropdown-item btn btn-link" (click)="logout()">Signout</button>
+            </div>
+        </li>
+    </ul>
+
+</nav>
+
+<router-outlet></router-outlet>

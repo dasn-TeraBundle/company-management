@@ -1,0 +1,32 @@
+<div>
+  <form #f="ngForm" (ngSubmit)="f.valid && submit(f)">
+    <mat-form-field>
+      <input type="text" matInput placeholder="Email ID" name="email" [(ngModel)]="user.email" required>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" matInput placeholder="Firstname" name="firstname" [(ngModel)]="user.firstname" required>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" matInput placeholder="Lastname" name="lastname" [(ngModel)]="user.lastname" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Role" name="role" [(ngModel)]="user.role" required>
+        <mat-option value="SYS_ADMIN" *ngIf="currUser.role == 'SYS_ADMIN'">System ADMIN</mat-option>
+        <mat-option value="ORG_ADMIN" *ngIf="currUser.role == 'SYS_ADMIN'">Company ADMIN</mat-option>
+        <mat-option value="ORG_DEPT_ADMIN" *ngIf="currUser.role == 'SYS_ADMIN' || currUser.role == 'ORG_ADMIN'">Department ADMIN</mat-option>
+        <mat-option value="EMPLOYEE" *ngIf="currUser.role != 'EMPLOYEE'">Employee</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div *ngIf="user.role == 'ORG_ADMIN'">
+      <mat-form-field>
+        <input type="text" matInput placeholder="Company ID" name="company_id" [(ngModel)]="company.id" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input type="text" matInput placeholder="Company Name" name="company_name" [(ngModel)]="company.name" required>
+      </mat-form-field>
+    </div>
+
+    <button type="submit" mat-raised-button color="primary">Submit</button>
+  </form>
+</div>

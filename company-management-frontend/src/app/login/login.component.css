@@ -1,0 +1,23 @@
+#bmm-login-background {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    /*background-image: url("../images/home-image.png");*/
+    background-color: indigo;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+    background-size: cover;
+}
+
+#brand {
+    display: block;
+    margin: auto;
+}
+
+#bmm-login-form-wrapper {
+    background-color: white;
+}
+
+.bmm-login-input {
+    width: 100%;
+}
