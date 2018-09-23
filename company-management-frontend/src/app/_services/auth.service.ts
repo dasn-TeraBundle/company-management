@@ -14,7 +14,8 @@ const HTTP_OPTIONS = {
 @Injectable()
 export class AuthService {
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient) {
+  }
 
   login(credentials: any): Observable<any> {
     let loginUrl = "/auth/login";
@@ -26,23 +27,19 @@ export class AuthService {
       .pipe(
         map((res: any) => {
           sessionStorage.setItem("isLoggedIn", "1");
-          this.saveProfile();
           return res;
         })
       );
   }
 
   getProfile(): Observable<User> {
-    return this._http.get<User>(USER_API_URL + "/profile");
-  }
-
-  private saveProfile() {
-    this.getProfile()
-      .toPromise()
-      .then(user => {
-      sessionStorage.setItem("role", user.role);
-      sessionStorage.setItem("firstname", user.firstname);
-    });
+    return this._http.get<User>(USER_API_URL + "/profile")
+      .pipe(
+        map((res: User) => {
+          this.saveProfile(res);
+          return res;
+        })
+      );
   }
 
   isLoggedIn(): boolean {
@@ -56,17 +53,26 @@ export class AuthService {
     sessionStorage.removeItem("isLoggedIn");
     sessionStorage.removeItem("firstname");
     sessionStorage.removeItem("role");
+    sessionStorage.removeItem("email");
   }
 
   getCurrentUser(): User {
     const user = new User();
     user.firstname = sessionStorage.getItem("firstname");
     user.role = sessionStorage.getItem("role");
+    user.email = sessionStorage.getItem("email");
+
 
     return user;
   }
 
   list(): Observable<any> {
     return this._http.get("/rest/user/list");
+  }
+
+  private saveProfile(user: User) {
+    sessionStorage.setItem("role", user.role);
+    sessionStorage.setItem("firstname", user.firstname);
+    sessionStorage.setItem("email", user.email);
   }
 }

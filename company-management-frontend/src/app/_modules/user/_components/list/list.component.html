@@ -1,4 +1,4 @@
-<div class="row" *ngIf="user.role != 'EMPLOYEE'">
+<div class="row" *ngIf="currUser.role != 'EMPLOYEE'">
   <div class="col-4 offset-6">
     <a routerLink="add">
       <i class="fa fa-plus"></i> Add User
@@ -8,5 +8,40 @@
 
 <div>
   <h3>All Users</h3>
+
+  <div *ngIf="!users" class="alert alert-info">Fetching Data...</div>
+  <div class="table-responsive" *ngIf="users">
+
+    <div *ngIf="users.length == 0">No Data Found</div>
+
+    <table class="table table-striped" *ngIf="users.length > 0">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th *ngIf="currUser.role == 'SYS_ADMIN'">Company</th>
+        <th>Department</th>
+        <th>Role</th>
+        <th>Manage</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{user.firstname}} {{user.lastname}}</td>
+        <td *ngIf="currUser.role == 'SYS_ADMIN'">
+          <span
+            *ngIf="user.role == 'ORG_DEPT_ADMIN' || user.role == 'EMPLOYEE'">{{user.department?.company?.name}}</span>
+          <span *ngIf="user.role == 'ORG_ADMIN'">{{companyMap[user.email]?.name}}</span>
+        </td>
+        <td *ngIf="currUser.role == 'SYS_ADMIN' || user.role == 'ORG_ADMIN'">{{user.department?.name}}</td>
+        <td *ngIf="currUser.role == 'ORG_DEPT_ADMIN'">{{currUser.department.name}}</td>
+        <td>{{user.role}}</td>
+        <td>
+          <button mat-mini-fab color=""><i class="fa fa-pencil"></i></button>
+          <button mat-mini-fab color="warn"><i class="fa fa-trash-o"></i></button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 

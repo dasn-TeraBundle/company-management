@@ -22,8 +22,13 @@ export class LoginComponent implements OnInit {
   login() {
     this.model.username = this.model.email;
     this._authService.login(this.model)
-      .subscribe(res => {
-          this._router.navigate(['/']);
-      }, err => this.error = 'Invalid credentials');
+      .toPromise()
+      .then(res => {
+        return this._authService.getProfile()
+          .toPromise();
+      })
+      .then(user => {
+        this._router.navigate(['/']);
+      }).catch(err => this.error = 'Invalid credentials');
   }
 }

@@ -1,3 +1,34 @@
-<p>
-  list works!
-</p>
+<div class="row" *ngIf="currUser.role == 'SYS_ADMIN' || currUser.role == 'ORG_ADMIN'">
+  <div class="col-4 offset-6">
+    <a routerLink="add">
+      <i class="fa fa-plus"></i> Add Department
+    </a>
+  </div>
+</div>
+
+<div>
+  <div *ngIf="!depts">Fetching Data...</div>
+
+  <div class="table-responsive" *ngIf="depts">
+    <div *ngIf="depts.length == 0">No Data Found</div>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <td>Company</td>
+        <td>Name</td>
+        <td *ngIf="currUser.role == 'SYS_ADMIN' || currUser.role == 'ORG_ADMIN'">Manage</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let dept of depts">
+        <td>{{dept.company.name}}</td>
+        <td>{{dept.name}}</td>
+        <td>
+          <button mat-mini-fab color=""><i class="fa fa-pencil"></i></button>
+          <button mat-mini-fab color="warn"><i class="fa fa-trash-o"></i></button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

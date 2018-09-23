@@ -1,15 +1,16 @@
+<toaster-container></toaster-container>
 <div>
   <form #f="ngForm" (ngSubmit)="f.valid && submit(f)">
-    <mat-form-field>
-      <input type="text" matInput placeholder="Email ID" name="email" [(ngModel)]="user.email" required>
+    <mat-form-field class="cm-input-width-100">
+      <input type="email" matInput placeholder="Email ID" name="email" [(ngModel)]="user.email" required>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field class="cm-input-width-25 p-2">
       <input type="text" matInput placeholder="Firstname" name="firstname" [(ngModel)]="user.firstname" required>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field class="cm-input-width-25 p-2">
       <input type="text" matInput placeholder="Lastname" name="lastname" [(ngModel)]="user.lastname" required>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field class="cm-input-width-25 p-2">
       <mat-select placeholder="Role" name="role" [(ngModel)]="user.role" required>
         <mat-option value="SYS_ADMIN" *ngIf="currUser.role == 'SYS_ADMIN'">System ADMIN</mat-option>
         <mat-option value="ORG_ADMIN" *ngIf="currUser.role == 'SYS_ADMIN'">Company ADMIN</mat-option>
@@ -19,14 +20,22 @@
     </mat-form-field>
 
     <div *ngIf="user.role == 'ORG_ADMIN'">
-      <mat-form-field>
+      <p>Create New Company for New Company Admin</p>
+      <mat-form-field class="cm-input-width-25 p-2">
         <input type="text" matInput placeholder="Company ID" name="company_id" [(ngModel)]="company.id" required>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field class="cm-input-width-60 p-2">
         <input type="text" matInput placeholder="Company Name" name="company_name" [(ngModel)]="company.name" required>
       </mat-form-field>
     </div>
 
-    <button type="submit" mat-raised-button color="primary">Submit</button>
+    <div *ngIf="user.role == 'EMPLOYEE'">
+      <mat-select class="cm-input-width-25">
+
+      </mat-select>
+    </div>
+
+    <br/>
+    <button type="submit" mat-raised-button color="primary" [disabled]="isAdding">Submit</button>
   </form>
 </div>

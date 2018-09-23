@@ -18,4 +18,7 @@ export class UserService {
     return this._http.post<User>(USER_API_URL + "/add", user, HTTP_OPTIONS);
   }
 
+  list(): Observable<User[]> {
+    return this._http.get<User[]>(USER_API_URL + "/list");
+  }
 }

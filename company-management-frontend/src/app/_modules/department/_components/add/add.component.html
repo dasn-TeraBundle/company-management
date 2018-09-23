@@ -1,3 +1,16 @@
-<p>
-  add works!
-</p>
+<toaster-container></toaster-container>
+
+<div>
+  <form #f="ngForm" (ngSubmit)="f.valid && onAdd(f)">
+    <mat-form-field class="cm-input-width-100" *ngIf="currUser.role == 'SYS_ADMIN'">
+    <mat-select placeholder="Company" name="company" [(ngModel)]="dept.company" required>
+      <mat-option *ngFor="let comp of companies" [value]="comp">{{comp.name}}</mat-option>
+    </mat-select>
+    </mat-form-field>
+    <mat-form-field class="cm-input-width-100">
+      <input type="text" name="name" matInput [(ngModel)]="dept.name" placeholder="Department Name" required>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary">Submit</button>
+  </form>
+</div>
