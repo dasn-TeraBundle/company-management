@@ -3,6 +3,7 @@ import {User} from "../../../../_models/user";
 import {AuthService} from "../../../../_services/auth.service";
 import {DepartmentService} from "../../../../_services/department.service";
 import {Department} from "../../../../_models/department";
+import {ToasterService} from "angular2-toaster";
 
 @Component({
   selector: 'app-list',
@@ -15,11 +16,20 @@ export class ListComponent implements OnInit {
   depts: Department[];
 
   constructor(private _authService: AuthService,
-              private _deptService: DepartmentService) { }
+              private _deptService: DepartmentService,
+              private _toasterService: ToasterService) { }
 
   ngOnInit() {
     this.currUser = this._authService.getCurrentUser();
     this.listDepts();
+  }
+
+  onDelete(dept: Department) {
+    this._deptService.delete(dept.id)
+      .subscribe(res => {
+        this._toasterService.pop("success", "Department deleted");
+        this.listDepts();
+      });
   }
 
   private listDepts() {

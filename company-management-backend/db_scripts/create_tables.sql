@@ -30,3 +30,17 @@ create table departments (
 alter table users
   add constraint fk_user_dept foreign key (department) references departments (id) on delete cascade;
 
+CREATE table documents (
+  id varchar2(15),
+  file_name varchar2(50) not null,
+  mime_type varchar2(250) not null,
+  company varchar2(10),
+  department varchar2(15),
+  employee varchar2(50),
+  uploaded_date timestamp,
+  modified_date timestamp,
+  constraint pk_document primary key (id),
+  constraint fk_doc_comp foreign key (company) references companies(id) on delete cascade,
+  constraint fk_doc_dept foreign key (department) references departments(id) on delete cascade ,
+  constraint fk_doc_user foreign key (employee) references users(email) on delete cascade
+)

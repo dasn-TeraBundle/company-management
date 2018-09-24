@@ -19,7 +19,7 @@ public class User {
     private String firstname;
     private String lastname;
     private UserRole role;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "DEPARTMENT", nullable = true)
     private Department department;
 

@@ -33,4 +33,18 @@ public class DepartmentController {
     public List<Department> list(Authentication auth) {
         return departmentService.findAllByLoggedInUser(auth);
     }
+    
+    @PutMapping("/update")
+    @PreAuthorize("hasAnyAuthority('SYS_ADMIN', 'ORG_ADMIN')")
+    public Department update(Authentication auth,
+                          @Valid @RequestBody Department department) {
+        return departmentService.update(auth, department);
+    }
+    
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('SYS_ADMIN', 'ORG_ADMIN')")
+    public void delete(Authentication auth,
+                          @PathVariable("id") String id) {
+        departmentService.delete(auth, id);
+    }
 }

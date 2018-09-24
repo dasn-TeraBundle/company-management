@@ -34,5 +34,19 @@ public class CompanyController {
     public List<Company> list(Authentication auth) {
         return companyService.findByLoggedUser(auth);
     }
+    
+    @PutMapping("/update")
+    @PreAuthorize("hasAnyAuthority('SYS_ADMIN')")
+    public Company update(Authentication auth,
+                       @Valid @RequestBody Company company) {
+        return companyService.update(auth, company);
+    }
+    
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('SYS_ADMIN')")
+    public void delete(Authentication auth,
+                       @PathVariable("id") String id) {
+        companyService.delete(auth, id);
+    }
 }
 

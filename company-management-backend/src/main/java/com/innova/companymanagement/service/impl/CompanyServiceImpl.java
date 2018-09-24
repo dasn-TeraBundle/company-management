@@ -43,13 +43,35 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company update(Authentication auth, Company company) {
-        // TODO Auto-generated method stub
-        return null;
+    	UserRole role = getRole(auth);
+
+        if (role == UserRole.SYS_ADMIN) {
+        	Company comp = findByID(company.getId());
+        	if (comp != null)
+        		return companyRepository.save(company);
+        	throw new IllegalArgumentException("Trying to update wrong company");
+        } else
+            throw new UnauthorizedAccessException("You don't have right to create company");
     }
 
     @Override
+	public void delete(Authentication auth, String id) {
+    	UserRole role = getRole(auth);
+
+        if (role == UserRole.SYS_ADMIN)
+        	companyRepository.deleteById(id);
+        else
+            throw new UnauthorizedAccessException("You don't have right to delete company");		
+	}
+    
+    @Override
     public void delete(Authentication auth, Company company) {
-        companyRepository.delete(company);
+    	UserRole role = getRole(auth);
+
+        if (role == UserRole.SYS_ADMIN)
+        	companyRepository.delete(company);
+        else
+            throw new UnauthorizedAccessException("You don't have right to delete company");
     }
 
     @Override
@@ -64,7 +86,7 @@ public class CompanyServiceImpl implements CompanyService {
         String email = auth.getName();
         return findByAdmin(email);
     }
-
+    
     @Override
     public List<Company> findByLoggedUser(Authentication auth) {
         UserDetails ud = (UserDetails)auth.getPrincipal();
@@ -79,4 +101,5 @@ public class CompanyServiceImpl implements CompanyService {
         }
         return null;
     }
+
 }

@@ -19,6 +19,7 @@ public interface DepartmentService extends CommonService {
     List<Department> findAllByLoggedInUser(Authentication auth);
     Department update(Authentication auth, Department department);
 
+    void delete(Authentication auth, String id);
     void delete(Authentication auth, Department department);
 
     default Department update(Department oldDept, Department newDept) {

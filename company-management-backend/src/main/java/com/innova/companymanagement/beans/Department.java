@@ -23,7 +23,7 @@ public class Department {
 
     @PrePersist
     private void preInsert() {
-        id = company.getId() + "_" + name.substring(0, 3);
+        id = company.getId() + "_" + name.toUpperCase().substring(0, 3);
     }
 
     public String getId() {

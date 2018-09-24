@@ -12,6 +12,7 @@ const appRoutes: Routes = [
       {path: 'company', loadChildren: 'app/_modules/company/company.module#CompanyModule'},
       {path: 'department', loadChildren: 'app/_modules/department/department.module#DepartmentModule'},
       {path: 'user', loadChildren: 'app/_modules/user/user.module#UserModule'},
+      {path: '', loadChildren: 'app/_modules/document/document.module#DocumentModule'},
     ]
   },
   {path: 'login', component: LoginComponent},

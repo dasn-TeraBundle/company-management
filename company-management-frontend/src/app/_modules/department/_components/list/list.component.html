@@ -1,3 +1,5 @@
+<toaster-container></toaster-container>
+
 <div class="row" *ngIf="currUser.role == 'SYS_ADMIN' || currUser.role == 'ORG_ADMIN'">
   <div class="col-4 offset-6">
     <a routerLink="add">
@@ -11,7 +13,7 @@
 
   <div class="table-responsive" *ngIf="depts">
     <div *ngIf="depts.length == 0">No Data Found</div>
-    <table class="table table-striped">
+    <table class="table table-striped" *ngIf="depts.length > 0">
       <thead>
       <tr>
         <td>Company</td>
@@ -25,7 +27,7 @@
         <td>{{dept.name}}</td>
         <td>
           <button mat-mini-fab color=""><i class="fa fa-pencil"></i></button>
-          <button mat-mini-fab color="warn"><i class="fa fa-trash-o"></i></button>
+          <button mat-mini-fab color="warn" (click)="onDelete(dept)"><i class="fa fa-trash-o"></i></button>
         </td>
       </tr>
       </tbody>

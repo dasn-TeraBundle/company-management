@@ -3,6 +3,7 @@ import {Company} from "../../../../_models/company";
 import {CompanyService} from "../../../../_services/company.service";
 import {AuthService} from "../../../../_services/auth.service";
 import {User} from "../../../../_models/user";
+import {ToasterService} from "angular2-toaster";
 
 @Component({
   selector: 'app-list',
@@ -15,11 +16,20 @@ export class ListComponent implements OnInit {
   companies: Company[];
 
   constructor(private _compService: CompanyService,
-              private _authService: AuthService) { }
+              private _authService: AuthService,
+              private _toasterService: ToasterService) { }
 
   ngOnInit() {
     this.user = this._authService.getCurrentUser();
     this.listCompanies();
+  }
+
+  onDelete(comp: Company) {
+    this._compService.delete(comp.id)
+      .subscribe(res => {
+        this._toasterService.pop("success", "Company Deleted")
+        this.listCompanies();
+      });
   }
 
   private listCompanies() {

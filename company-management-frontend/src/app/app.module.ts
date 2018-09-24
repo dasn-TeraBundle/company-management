@@ -15,6 +15,7 @@ import {AuthGuard} from "./_guards/auth.guard";
 import {CompanyModule} from "./_modules/company/company.module";
 import {DepartmentModule} from "./_modules/department/department.module";
 import {UserModule} from "./_modules/user/user.module";
+import {DocumentModule} from "./_modules/document/document.module";
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import {UserModule} from "./_modules/user/user.module";
     AppRoutingModule,
     CompanyModule,
     DepartmentModule,
-    UserModule
+    UserModule,
+    DocumentModule
   ],
   providers: [AuthGuard, AuthService],
   bootstrap: [AppComponent]

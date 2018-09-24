@@ -38,8 +38,8 @@ public class DepartmentServiceImpl implements DepartmentService {
         else if (role == UserRole.ORG_ADMIN) {
             Company company = companyService.findByAdmin(auth);
             if (company != null) {
-                if (company == department.getCompany())
-                    return departmentRepository.save(department);
+                department.setCompany(company);
+                return departmentRepository.save(department);
             }
             throw new UnauthorizedAccessException("Yo don't have rights to create departments for this company");
         } else
@@ -88,27 +88,67 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Department update(Authentication auth, Department department) {
-        Department dept = null; //TODO do after setting id
+        Department dept = findById(department.getId());
         UserRole role = getRole(auth);
 
-        if (role == UserRole.SYS_ADMIN)
-            return departmentRepository.save(update(dept, department));
-        else if (role == UserRole.ORG_ADMIN) {
-            Company company = companyService.findByAdmin(auth);
-            if (company != null) {
-                if (company == department.getCompany())
-                    return departmentRepository.save(update(dept, department));
-            }
-            throw new UnauthorizedAccessException("Yo don't have rights to create departments for this company");
+        if (dept != null ) {
+        	if (role == UserRole.SYS_ADMIN)
+                return departmentRepository.save(update(dept, department));
+            else if (role == UserRole.ORG_ADMIN) {
+                Company company = companyService.findByAdmin(auth);
+                if (company != null) {
+                    if (company == department.getCompany())
+                        return departmentRepository.save(update(dept, department));
+                }
+                throw new UnauthorizedAccessException("Yo don't have rights to create departments for this company");
+            } else
+                throw new UnauthorizedAccessException("You don't have right to create department");
         } else
-            throw new UnauthorizedAccessException("You don't have right to create department");
-
+        	throw new IllegalArgumentException("Department you are trying to update doesn't exist");
+        
     }
 
     @Override
-    public void delete(Authentication auth, Department department) {
-        // TODO Auto-generated method stub
+	public void delete(Authentication auth, String id) {
+    	Department dept = findById(id);
+        UserRole role = getRole(auth);
 
+        if (dept != null ) {
+        	if (role == UserRole.SYS_ADMIN)
+                departmentRepository.deleteById(id);
+            else if (role == UserRole.ORG_ADMIN) {
+                Company company = companyService.findByAdmin(auth);
+                if (company != null) {
+                    if (company == dept.getCompany())
+                        departmentRepository.deleteById(id);
+                } else
+                    throw new UnauthorizedAccessException("Yo don't have rights to delete departments for this company");
+            } else
+                throw new UnauthorizedAccessException("You don't have right to delete department");
+        } else
+        	throw new IllegalArgumentException("You are trying to delete a Department that doesn't exist");
+	}
+    
+    @Override
+    public void delete(Authentication auth, Department department) {
+        Department dept = findById(department.getId());
+        UserRole role = getRole(auth);
+
+        if (dept != null ) {
+        	if (role == UserRole.SYS_ADMIN)
+                departmentRepository.delete(department);
+            else if (role == UserRole.ORG_ADMIN) {
+                Company company = companyService.findByAdmin(auth);
+                if (company != null) {
+                    if (company == department.getCompany())
+                        departmentRepository.delete(department);
+                }
+                throw new UnauthorizedAccessException("Yo don't have rights to delete departments for this company");
+            } else
+                throw new UnauthorizedAccessException("You don't have right to delete department");
+        } else
+        	throw new IllegalArgumentException("You are trying to delete a Department that doesn't exist");
+        
     }
 
 }

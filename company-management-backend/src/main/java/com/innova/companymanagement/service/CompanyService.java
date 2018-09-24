@@ -19,5 +19,6 @@ public interface CompanyService extends CommonService {
 
     List<Company> findByLoggedUser(Authentication auth);
 
+    void delete(Authentication auth, String id);
     void delete(Authentication auth, Company company);
 }

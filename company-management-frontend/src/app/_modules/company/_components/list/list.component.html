@@ -1,3 +1,5 @@
+<toaster-container></toaster-container>
+
 <div class="row" *ngIf="user.role == 'SYS_ADMIN'">
   <div class="col-4 offset-6">
     <a routerLink="add">
@@ -29,8 +31,8 @@
         <td>{{company.name}}</td>
         <td>{{company.admin.firstname}} {{company.admin.lastname}}</td>
         <td *ngIf="user.role == 'SYS_ADMIN'">
-          <button mat-icon-button><i class="fa fa-pencil"></i></button>
-          <button mat-icon-button color="danger"><i class="fa fa-trash-o"></i></button>
+          <button mat-mini-fab color=""><i class="fa fa-pencil"></i></button>
+          <button mat-mini-fab color="warn" (click)="onDelete(company)"><i class="fa fa-trash-o"></i></button>
         </td>
       </tr>
       </tbody>

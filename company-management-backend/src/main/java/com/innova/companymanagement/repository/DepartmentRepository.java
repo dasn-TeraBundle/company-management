@@ -4,7 +4,6 @@ import com.innova.companymanagement.beans.Company;
 import com.innova.companymanagement.beans.Department;
 import com.innova.companymanagement.beans.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
