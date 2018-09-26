@@ -13,7 +13,8 @@ public interface UserService extends CommonService, UserDetailsService {
 
     User add(Authentication auth, User user);
 
-    User update(User user);
+    User update(Authentication auth, User user);
 
-    void delete(User user);
+    void delete(Authentication auth, String id);
+    void delete(Authentication auth, User user);
 }

@@ -24,6 +24,7 @@ import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -72,7 +73,10 @@ public class UserServiceImpl implements UserService {
         else if(role == UserRole.ORG_ADMIN) {
             Company company = companyService.findByAdmin(auth);
             List<Department> depts = departmentService.findAllByCompany(company);
-            return userRepository.findAllByDepartmentIn(depts);
+            List<User> users = userRepository.findAllByDepartmentIn(depts);
+            List<User> deptAdmins = depts.stream().map(dept -> dept.getAdmin()).collect(Collectors.toList());
+            deptAdmins.addAll(users);
+            return deptAdmins;
         } else if (role == UserRole.ORG_DEPT_ADMIN) {
             Department dept = departmentService.findByAdmin(ud.getUsername());
             return userRepository.findAllByDepartment(dept);
@@ -91,10 +95,15 @@ public class UserServiceImpl implements UserService {
         if (role == UserRole.SYS_ADMIN)
             return userRepository.save(user);
         else if (role == UserRole.ORG_ADMIN) {
-            if (user.getDepartment() != null)
-                return userRepository.save(user);
-            else
-                throw new IllegalArgumentException("Company Admin must choose department of a user");
+        	if (user.getRole() == UserRole.ORG_DEPT_ADMIN)
+        		return userRepository.save(user);
+        	else if (user.getRole() == UserRole.EMPLOYEE) {
+        		if (user.getDepartment() != null)
+        			return userRepository.save(user);
+        		else
+                    throw new IllegalArgumentException("Company Admin must choose department of a user");        	
+        	} else
+                throw new UnauthorizedAccessException("You don't have rights to add users to this company with this role");
         } else if (role == UserRole.ORG_DEPT_ADMIN) {
             Department dept = departmentService.findByAdmin(ud.getUsername());
             if (dept == null)
@@ -106,13 +115,84 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(User user) {
+    public User update(Authentication auth, User user) {
         return null;
     }
 
     @Override
-    public void delete(User user) {
+    public void delete(Authentication auth, String id) {
+    	UserDetails ud = (UserDetails)auth.getPrincipal();
+        UserRole role = getRole(auth);
+        User user = findByEmail(id);
 
+        if (role == UserRole.SYS_ADMIN)
+            userRepository.delete(user);
+        else if (role == UserRole.ORG_ADMIN) {
+        	Company company = companyService.findByAdmin(auth);
+        	
+        	if (user.getDepartment() == null && user.getRole() == UserRole.ORG_DEPT_ADMIN) {
+                Department dept = departmentService.findByAdmin(user);
+                
+                if (dept != null) {
+                	if (dept.getCompany().equals(company))
+                    	userRepository.delete(user);
+                    else
+                    	throw new UnauthorizedAccessException("Yo don't have access to delete this Department Admin");
+                } else
+                	throw new IllegalArgumentException("You cannot delete a Department Admin tagged to any department");
+        	} else if (user.getDepartment().getCompany().equals(company))
+                userRepository.delete(user);
+            //else
+            //    throw new IllegalArgumentException("Company Admin must choose department of a user");
+        } else if (role == UserRole.ORG_DEPT_ADMIN) {
+            Department dept = departmentService.findByAdmin(ud.getUsername());
+            
+            if (dept == null)
+                throw new UnauthorizedAccessException("You don't have rights to delete users to this department");
+            else if(dept.equals(user.getDepartment()))
+            	userRepository.delete(user);
+            else
+                throw new UnauthorizedAccessException("You don't have rights to delete users to this department");
+        } else
+            throw new UnauthorizedAccessException("Yo cannot create users");
+    }
+
+    @Override
+    public void delete(Authentication auth, User user) {
+    	UserDetails ud = (UserDetails)auth.getPrincipal();
+        UserRole role = getRole(auth);
+        user = findByEmail(user.getEmail());
+
+        if (role == UserRole.SYS_ADMIN)
+            userRepository.delete(user);
+        else if (role == UserRole.ORG_ADMIN) {
+        	Company company = companyService.findByAdmin(auth);
+        	
+        	if (user.getDepartment() == null && user.getRole() == UserRole.ORG_DEPT_ADMIN) {
+                Department dept = departmentService.findByAdmin(user);
+                
+                if (dept != null) {
+                	if (dept.getCompany().equals(company))
+                    	userRepository.delete(user);
+                    else
+                    	throw new UnauthorizedAccessException("Yo don't have access to delete this Department Admin");
+                } else
+                	throw new IllegalArgumentException("You cannot delete a Department Admin tagged to any department");
+        	} else if (user.getDepartment().getCompany().equals(company))
+                userRepository.delete(user);
+            //else
+            //    throw new IllegalArgumentException("Company Admin must choose department of a user");
+        } else if (role == UserRole.ORG_DEPT_ADMIN) {
+            Department dept = departmentService.findByAdmin(ud.getUsername());
+            
+            if (dept == null)
+                throw new UnauthorizedAccessException("You don't have rights to delete users to this department");
+            else if(dept.equals(user.getDepartment()))
+            	userRepository.delete(user);
+            else
+                throw new UnauthorizedAccessException("You don't have rights to delete users to this department");
+        } else
+            throw new UnauthorizedAccessException("Yo cannot create users");
     }
 
     @Override

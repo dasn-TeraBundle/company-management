@@ -21,4 +21,8 @@ export class UserService {
   list(): Observable<User[]> {
     return this._http.get<User[]>(USER_API_URL + "/list");
   }
+
+  delete(id: string): Observable<any> {
+    return this._http.delete<any>(USER_API_URL + "/delete/" + id);
+  }
 }

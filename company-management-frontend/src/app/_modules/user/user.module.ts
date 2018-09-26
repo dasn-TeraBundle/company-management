@@ -8,11 +8,13 @@ import {UserService} from "../../_services/user.service";
 import {CompanyService} from "../../_services/company.service";
 import {DepartmentService} from "../../_services/department.service";
 import {ToasterModule} from "angular2-toaster";
+import {SharedModule} from "../shared/shared.module";
 
 @NgModule({
   imports: [
     CommonModule,
     BmmmaterialModule,
+	SharedModule,
     FormsModule,
     ToasterModule.forRoot(),
     UserRoutingModule

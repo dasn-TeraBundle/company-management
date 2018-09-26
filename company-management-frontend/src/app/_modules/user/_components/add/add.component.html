@@ -14,7 +14,9 @@
       <mat-select placeholder="Role" name="role" [(ngModel)]="user.role" required>
         <mat-option value="SYS_ADMIN" *ngIf="currUser.role == 'SYS_ADMIN'">System ADMIN</mat-option>
         <mat-option value="ORG_ADMIN" *ngIf="currUser.role == 'SYS_ADMIN'">Company ADMIN</mat-option>
-        <mat-option value="ORG_DEPT_ADMIN" *ngIf="currUser.role == 'SYS_ADMIN' || currUser.role == 'ORG_ADMIN'">Department ADMIN</mat-option>
+        <mat-option value="ORG_DEPT_ADMIN" *ngIf="currUser.role == 'SYS_ADMIN' || currUser.role == 'ORG_ADMIN'">
+          Department ADMIN
+        </mat-option>
         <mat-option value="EMPLOYEE" *ngIf="currUser.role != 'EMPLOYEE'">Employee</mat-option>
       </mat-select>
     </mat-form-field>
@@ -29,9 +31,42 @@
       </mat-form-field>
     </div>
 
-    <div *ngIf="user.role == 'EMPLOYEE'">
-      <mat-select class="cm-input-width-25">
+    <div *ngIf="user.role == 'ORG_DEPT_ADMIN'">
+      <p>Create New Department</p>
+      <mat-form-field>
+        <mat-select class="cm-input-width-25" name="company_name" [(ngModel)]="department.company" placeholder="Company"
+                    required>
+          <mat-option *ngFor="let cId of compIds" [value]="compMap[cId]">{{compMap[cId].name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="cm-input-width-60 p-2">
+        <!--<mat-select class="cm-input-width-25" name="dept_name" [(ngModel)]="user.department" placeholder="Department"
+                    required>
+          <mat-option *ngFor="let cId of compDeptMap[compId]" [value]="cId">{{cId.name}}</mat-option>
+        </mat-select>-->
+        <input type="text" matInput placeholder="Department Name" name="dept_name" [(ngModel)]="department.name"
+               required>
+      </mat-form-field>
+    </div>
 
+    <div *ngIf="user.role == 'EMPLOYEE' && currUser.role == 'SYS_ADMIN'">
+      <mat-form-field>
+        <mat-select class="cm-input-width-25" name="company_name" [(ngModel)]="compId" placeholder="Company" required>
+          <mat-option *ngFor="let cId of compIds" [value]="cId">{{compMap[cId].name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-select class="cm-input-width-25" name="department" [(ngModel)]="user.department" placeholder="Department"
+                  required>
+        <mat-option *ngFor="let cId of compIds" [value]="compDeptMap[cId]">{{compDeptMap[cId]?.name}}
+        </mat-option>
+      </mat-select>
+    </div>
+
+    <div *ngIf="user.role == 'EMPLOYEE' && currUser.role == 'ORG_ADMIN'">
+      <mat-select class="cm-input-width-25" name="department" [(ngModel)]="user.department" placeholder="Department"
+                  required>
+        <mat-option *ngFor="let dept of departments" [value]="dept">{{dept.name}}
+        </mat-option>
       </mat-select>
     </div>
 

@@ -1,3 +1,130 @@
-<p>
-  list works!
-</p>
+<div class="pt-3">
+
+  <h4 *ngIf="currUser.role == 'SYS_ADMIN'">All Documents</h4>
+  <h4 *ngIf="currUser.role != 'SYS_ADMIN'">All Global Documents</h4>
+  <div class="table-responsive" *ngIf="all_global">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <td>Name</td>
+        <td>Company</td>
+        <td>Department</td>
+        <td>Uploaded On</td>
+        <td>Modified On</td>
+        <td>Actions</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let doc of all_global">
+        <td>{{doc.filename}}</td>
+        <td>{{doc.company?.name || ' '}}</td>
+        <td>{{doc.department?.name}}</td>
+        <td>{{doc.uploadedDate | date: 'dd-MM-yyyy'}}</td>
+        <td>{{doc.modifiedDate | date: 'dd-MM-yyyy' || ' '}}</td>
+        <td>
+          <a href="rest/downloadDoc/{{doc.id}}"><i class="fa fa-download"></i></a>
+          <span *ngIf="currUser.role == 'SYS_ADMIN'">
+            <button mat-mini-fab color="warn" (click)="onDelete(doc)"><i class="fa fa-trash-o"></i></button>
+          </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 *ngIf="currUser.role == 'ORG_ADMIN'">My Company Documents - All</h4>
+  <h4 *ngIf="currUser.role == 'ORG_DEPT_ADMIN' || currUser.role == 'EMPLOYEE'">My Company Global Documents</h4>
+  <div class="table-responsive" *ngIf="currUser.role != 'SYS_ADMIN'">
+    <table class="table table-striped" *ngIf="all_comp_global">
+      <thead>
+      <tr>
+        <td>Name</td>
+        <td>Company</td>
+        <td>Department</td>
+        <td>Uploaded On</td>
+        <td>Modified On</td>
+        <td>Actions</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let doc of all_comp_global">
+        <td>{{doc.filename}}</td>
+        <td>{{doc.company?.name || ' '}}</td>
+        <td>{{doc.department?.name}}</td>
+        <td>{{doc.uploadedDate | date: 'dd-MM-yyyy'}}</td>
+        <td>{{doc.modifiedDate | date: 'dd-MM-yyyy' || ' '}}</td>
+        <td>
+          <a href="rest/downloadDoc/{{doc.id}}"><i class="fa fa-download"></i></a>
+          <span *ngIf="currUser.role == 'ORG_ADMIN'">
+            <button mat-mini-fab color="warn" (click)="onDelete(doc)"><i class="fa fa-trash-o"></i></button>
+          </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 *ngIf="currUser.role == 'ORG_DEPT_ADMIN'">My Department Documents - All</h4>
+  <h4 *ngIf="currUser.role == 'EMPLOYEE'">My Department Global Documents</h4>
+  <div class="table-responsive" *ngIf="currUser.role == 'ORG_DEPT_ADMIN' || currUser.role == 'EMPLOYEE'">
+    <table class="table table-striped" *ngIf="all_comp_dept_global">
+      <thead>
+      <tr>
+        <td>Name</td>
+        <td>Company</td>
+        <td>Department</td>
+        <td>Uploaded On</td>
+        <td>Modified On</td>
+        <td>Actions</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let doc of all_comp_dept_global">
+        <td>{{doc.filename}}</td>
+        <td>{{doc.company?.name || ' '}}</td>
+        <td>{{doc.department?.name}}</td>
+        <td>{{doc.uploadedDate | date: 'dd-MM-yyyy'}}</td>
+        <td>{{doc.modifiedDate | date: 'dd-MM-yyyy' || ' '}}</td>
+        <td>
+          <a href="rest/downloadDoc/{{doc.id}}"><i class="fa fa-download"></i></a>
+          <span *ngIf="currUser.role == 'ORG_DEPT_ADMIN'">
+            <button mat-mini-fab color="warn" (click)="onDelete(doc)"><i class="fa fa-trash-o"></i></button>
+          </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 *ngIf="currUser.role == 'EMPLOYEE'">My Documents</h4>
+  <div class="table-responsive" *ngIf="currUser.role == 'EMPLOYEE'">
+    <table class="table table-striped" *ngIf="my_docs">
+      <thead>
+      <tr>
+        <td>Name</td>
+        <td>Company</td>
+        <td>Department</td>
+        <td>Uploaded On</td>
+        <td>Modified On</td>
+        <td>Actions</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let doc of my_docs">
+        <td>{{doc.filename}}</td>
+        <td>{{doc.company?.name || ' '}}</td>
+        <td>{{doc.department?.name}}</td>
+        <td>{{doc.uploadedDate | date: 'dd-MM-yyyy'}}</td>
+        <td>{{doc.modifiedDate | date: 'dd-MM-yyyy' || ' '}}</td>
+        <td>
+          <a href="rest/downloadDoc/{{doc.id}}"><i class="fa fa-download"></i></a>
+          <span *ngIf="currUser.role == 'EMPLOYEE'">
+            <button mat-mini-fab color="warn" (click)="onDelete(doc)"><i class="fa fa-trash-o"></i></button>
+          </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

@@ -40,4 +40,10 @@ public class UserController {
     public List<User> list(Authentication auth) {
         return userService.findByLoggedInUser(auth);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public void delete(Authentication auth,
+                       @PathVariable("id") String id) {
+        userService.delete(auth, id);
+    }
 }

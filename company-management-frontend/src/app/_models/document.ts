@@ -9,6 +9,6 @@ export interface Document {
   company: Company;
   department: Department;
   employee: User;
-  uploaded_date: string;
-  modified_date: string;
+  uploadedDate: string;
+  modifiedDate: string;
 }

@@ -1,3 +1,5 @@
+<toaster-container></toaster-container>
+
 <div class="row" *ngIf="currUser.role != 'EMPLOYEE'">
   <div class="col-4 offset-6">
     <a routerLink="add">
@@ -29,15 +31,15 @@
         <td>{{user.firstname}} {{user.lastname}}</td>
         <td *ngIf="currUser.role == 'SYS_ADMIN'">
           <span
-            *ngIf="user.role == 'ORG_DEPT_ADMIN' || user.role == 'EMPLOYEE'">{{user.department?.company?.name}}</span>
-          <span *ngIf="user.role == 'ORG_ADMIN'">{{companyMap[user.email]?.name}}</span>
+            *ngIf="user.role == 'ORG_DEPT_ADMIN' || user.role == 'EMPLOYEE'">{{user.department?.company?.name || ' '}}</span>
+          <span *ngIf="user.role == 'ORG_ADMIN'">{{companyMap[user.email]?.name || ' '}}</span>
         </td>
-        <td *ngIf="currUser.role == 'SYS_ADMIN' || user.role == 'ORG_ADMIN'">{{user.department?.name}}</td>
-        <td *ngIf="currUser.role == 'ORG_DEPT_ADMIN'">{{currUser.department.name}}</td>
+        <td *ngIf="currUser.role == 'SYS_ADMIN' || currUser.role == 'ORG_ADMIN'">{{user.department?.name || ' '}}</td>
+        <td *ngIf="currUser.role == 'ORG_DEPT_ADMIN'">{{user.department.name || ' '}}</td>
         <td>{{user.role}}</td>
         <td>
           <button mat-mini-fab color=""><i class="fa fa-pencil"></i></button>
-          <button mat-mini-fab color="warn"><i class="fa fa-trash-o"></i></button>
+          <button mat-mini-fab color="warn" (click)="onDelete(user)"><i class="fa fa-trash-o"></i></button>
         </td>
       </tr>
       </tbody>
