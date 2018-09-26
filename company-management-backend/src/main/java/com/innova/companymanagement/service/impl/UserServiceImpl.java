@@ -33,17 +33,18 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
-    private CompanyService companyService;
-    private DepartmentService departmentService;
-
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, CompanyService companyService, DepartmentService departmentService) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.companyService = companyService;
-        this.departmentService = departmentService;
-    }
 
     @Autowired
+    private CompanyService companyService;
+    @Autowired
+    private DepartmentService departmentService;
+
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
 
 
     @PostConstruct
