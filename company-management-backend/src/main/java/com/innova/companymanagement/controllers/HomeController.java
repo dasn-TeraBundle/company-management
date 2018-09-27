@@ -17,12 +17,8 @@ import java.io.OutputStream;
 @Controller
 public class HomeController {
 
-    private DocumentService documentService;
-
     @Autowired
-    public HomeController(DocumentService documentService) {
-        this.documentService = documentService;
-    }
+    private DocumentService documentService;
 
     @RequestMapping("/")
     public String home() {

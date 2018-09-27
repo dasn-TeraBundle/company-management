@@ -38,18 +38,18 @@ public class DocumentServiceImpl implements DocumentService {
     private static final String DOC_UPLOAD_PATH = "D:/CM_Docs/";
 
     private DocumentRepository docRepository;
+	
+    @Autowired
     private CompanyService companyService;
+    @Autowired
     private DepartmentService departmentService;
+    @Autowired
     private UserService userService;
 
     @Autowired
-    public DocumentServiceImpl(DocumentRepository docRepository, CompanyService companyService,
-                               DepartmentService departmentService, UserService userService) {
+    public DocumentServiceImpl(DocumentRepository docRepository) {
         super();
         this.docRepository = docRepository;
-        this.companyService = companyService;
-        this.departmentService = departmentService;
-        this.userService = userService;
     }
 
     @PostConstruct
